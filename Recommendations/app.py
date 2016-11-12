@@ -1,6 +1,8 @@
 from flask import Flask, request
-
+from flask.ext.cors import CORS, cross_origin
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 #counts the total number of common locations between our user and his friend/a stranger. It also maintains a list of all the locations seen so far, which is used later for nn_matrix
 def count_common(user_locs, other_locs, all_locs):
@@ -102,7 +104,8 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 				 positive value for positive sentiment and negative score for negative sentiment
 # 5) k: how many neighbors to consider for collaborative filtering
 """
-@app.route('/')
+@app.route('/', methods=['POST'])
+@cross_origin()
 def main():
 	k = 3
 	visited_places = request.json('visited_places')
@@ -111,5 +114,12 @@ def main():
 	sentiments = request.args.json('sentiments')
 	recommendations = {'ans': recommend(visited_places, friends, strangers, sentiments, k)}
 	return flask.jsonify(**recommendations)
+
+
+@app.route('/', methods=['GET'])
+@cross_origin()
+def test():
+	return flask.jsonify({"status": "working"})
+
 
 app.run(host='localhost')
