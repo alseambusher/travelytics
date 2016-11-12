@@ -134,17 +134,19 @@ def nearestAirport():
     
         # Get longitude and latitude of source/destination cities 
         baseurl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-        r = requests.get(baseurl+request.json['source'])
+        r = requests.get(baseurl+request.json['source'].replace(" ","\%20"))
         
-        lat1 = r.json()['results']['geometry']['bounds']['northeast']['lat']
-        lng1 = r.json()['results']['geometry']['bounds']['northeast']['lng']
+        lat1 = r.json()['results'][0]['geometry']['bounds']['northeast']['lat']
+        lng1 = r.json()['results'][0]['geometry']['bounds']['northeast']['lng']
+        print "Got (lang, lat) from source, "+str(lat1), str(lng1)
         
         # Get longitude and latitude of source/destination cities 
         baseurl = 'https://maps.googleapis.com/maps/api/geocode/json?address='
-        r = requests.get(baseurl+request.json['destination'])
+        r = requests.get(baseurl+request.json['destination'].replace(" ","\%20"))
         
-        lat2 = r.json()['results']['geometry']['bounds']['northeast']['lat']
-        lng2 = r.json()['results']['geometry']['bounds']['northeast']['lng']
+        lat2 = r.json()['results'][0]['geometry']['bounds']['northeast']['lat']
+        lng2 = r.json()['results'][0]['geometry']['bounds']['northeast']['lng']
+        print "Got (lang, lat) from source, "+str(lat2), str(lng2)
         
         data = findNearestAirport(lat1, lng1, lat2, lng2)
         result1 = {}
@@ -181,26 +183,41 @@ def filteredInfoInterestingPlaces(data):
         results.append(result)
     
     pprint (results)
-    return {"locations":results[:10]}
+    if len(results) < 5:
+        return {"locations":results}
+    else:
+        return {"locations":results[:5]}
 
 def findNearestAirport(lat1, lng1, lat2, lng2):
     
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
-    r = requests.get(baseurl+secret+'&latitude='+lat1+'&longitude='+lng1)
-    origin_airports = r.json()
+    r = requests.get(baseurl+secret+'&latitude='+str(lat1)+'&longitude='+str(lng1))
+    #origin_airports = r.json()
+    origin_airports = sorted(r.json(), key=lambda x: x['distance'])
+    
+    print (origin_airports)
     
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
-    r = requests.get(baseurl+secret+'&latitude='+lat2+'&longitude='+lng2)
-    destination_airports = r.json()
+    r = requests.get(baseurl+secret+'&latitude='+str(lat2)+'&longitude='+str(lng2))
+    #destination_airports = r.json()
+    destination_airports = sorted(r.json(), key=lambda x: x['distance'])
+    
+    print (destination_airports)
     
     # Start checking for direct flight from origin to destination airport
     for i in range(0, len(origin_airports)):
         for j in range(0, len(destination_airports)):
             baseurl = 'https://api.sandbox.amadeus.com/v1.2/flights/inspiration-search?apikey='
             r = requests.get(baseurl+secret+'&origin='+origin_airports[i]['airport']+'&destination='+destination_airports[j]['airport'])
-            if len(r.json()['results']) > 0:
+            if 'results' in r.json() and len(r.json()['results']) > 0:
+                print "Found a connecting flight to below two locations"
+                pprint(origin_airports[i])
+                pprint(destination_airports[j])
                 break # Found the connecting flight
-    
+        
+        if 'results' in r.json() and len(r.json()['results']) > 0:
+            break
+            
     return {'origin':origin_airports[i], 'destination': destination_airports[j]}
     
 # Run
