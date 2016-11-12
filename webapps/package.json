@@ -19,7 +19,8 @@
     "nodemailer": "latest",
     "node-schedule": "latest",
     "nedb": "latest",
-    "material-design-lite": "latest"
+    "material-design-lite": "latest",
+    "urllib": "latest"
   },
   "engines": {
     "node": "latest"
