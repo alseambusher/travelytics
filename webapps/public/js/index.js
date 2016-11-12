@@ -15,7 +15,7 @@ function initMap() {
     var locations;
     $.ajax({
         method: "POST",
-        url: 'http://093cbf8b.ngrok.io/interest',
+        url: 'http://ff30052b.ngrok.io/interest',
         data: JSON.stringify({city : city['name']}),
         contentType: 'application/json',
         success: function(data){
@@ -35,12 +35,9 @@ function initMap() {
             plotLocations(map, locations);
 
             //Plot the paths
-            //plotPaths(map, locations);
+            plotPaths(map, locations);
         }
     });
-    
-
-
 }
 
 
@@ -94,3 +91,29 @@ function plotLocations(map, locations) {
     }
 }
 
+function plotPaths(map, locations) {
+    
+
+    //plotPath(directionsService, directionsDisplay);
+    for(i = 0; i < locations.length - 1; i++){
+        plotPath(map, locations[i], locations[i + 1])
+    }
+}
+
+function plotPath(map, start, end) {
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    directionsDisplay.setMap(map);
+    directionsDisplay.setOptions( { suppressMarkers: true } );
+    directionsService.route({
+        origin: new google.maps.LatLng(start['latitude'],start['longitude']),
+        destination: new google.maps.LatLng(end['latitude'],end['longitude']),
+        travelMode: 'DRIVING'
+    }, function(response, status) {
+        if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+}
