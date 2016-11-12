@@ -1,0 +1,26 @@
+<!doctype html>
+<head>
+	<title>Dashboard</title>
+	<script src="jquery.js"></script>
+	<script src="script.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<link rel="stylesheet" href="bootstrap.min.css" />
+	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
+	<script src="/node_modules/material-design-lite/material.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<script type="text/javascript">
+	var routes = [];
+	$(function () {
+		// initialize tooltips
+		$('[data-toggle="tooltip"]').tooltip();
+		routes = JSON.parse('<%- routes %>');
+		options = JSON.parse('<%- options %>');
+	})
+	</script>
+</head>
+<body>
+	<% include navbar.ejs %>
+	<% include popup.ejs %>
+</body>
+</html>

@@ -1,0 +1,7 @@
+*.swp
+node_modules
+crontabs/*.db
+crontabs/logs/*.log
+config
+bower_components
+tmp/jobs.db
