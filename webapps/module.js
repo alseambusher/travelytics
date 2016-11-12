@@ -3,7 +3,7 @@ var rest = require("./rest");
 var config = require("./config");
 
 var urls = {
-	SENTIMENT: "http://challenge-alchemyapi-jaypriyadarshi-154.mybluemix.net/",
+	SENTIMENT: "http://challenge-alchemyapi.mybluemix.net/",
 	TEXT_EXTRACTION: "https://gateway-a.watsonplatform.net/calls/url/URLGetText?url={url}&outputMode=json&apikey="
 };
 

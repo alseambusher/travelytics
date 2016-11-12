@@ -9,7 +9,7 @@ function initMap() {
     });
 
     //Plot a marker at the airport of the city
-    center = drawMarker(map, city)
+    center = drawMarker(map, city);
 
     //Access API endpoint to get top popular spots
     var locations;
@@ -28,7 +28,7 @@ function initMap() {
             //Order the points
             //location = city;
 
-            
+
             //locations = [{name: 'AAAAA', latitude: -20.363, longitude: 135.044, description: "adkh", categories: [], image: ""}, {name: 'BBBBB', latitude: -29.363, longitude: 126.044, description: "lksajkl", categories: [], image: ""}]
 
             //Plot the points
@@ -38,11 +38,7 @@ function initMap() {
             //plotPaths(map, locations);
         }
     });
-    
-
-
 }
-
 
 function drawMarker(map, location) {
     var marker = new google.maps.Marker({
@@ -65,7 +61,7 @@ function drawMarker(map, location) {
         });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        }); 
+        });
     }
     catch(err){
         var e = marker._eventListeners[0];
@@ -83,7 +79,7 @@ function drawMarker(map, location) {
         });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        }); 
+        });
     }
     //return marker;
 }
@@ -93,4 +89,3 @@ function plotLocations(map, locations) {
         drawMarker(map, locations[i]);
     }
 }
-

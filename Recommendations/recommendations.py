@@ -55,15 +55,7 @@ def sort_by_sentiment(suggestions, sentiments):
 		recommendations.append(suggestion[1])
 	return recommendations
 
-"""
-# Takes 3 arguments:
-# 1) visted_places: a list containing the places our user has visited
-# 2) friends: a dictionary where is the key is the name of the friend and value is a tuple of the form (#mutal_friends, total_friends, places visited by friend) 
-# 3) strangers: a dictionary where the key is the name of the stranger and the value as a list of places he has visited
-# 4) sentiments: a dictionary where the key is the name of the location and the value is the sentiment score of the location, with zero score for neutral sentiment, 
-				 positive value for positive sentiment and negative score for negative sentiment
-# 5) k: how many neighbors to consider for collaborative filtering
-"""
+
 def recommend(visited_places, friends, strangers, sentiments, k):
 	users_scores = [] #all friends and strangers scores go in this
 	usr_visited_len = len(visited_places)
@@ -101,7 +93,15 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 	#retrieve suggestions of the form (total number of users recommending to visit a place, name of the location)
 	suggestions = collab_filtering(nn_mat, all_locations)
 	return sort_by_sentiment(suggestions, sentiments)
-
+"""
+# Takes 3 arguments:
+# 1) visted_places: a list containing the places our user has visited
+# 2) friends: a dictionary where is the key is the name of the friend and value is a tuple of the form (#mutal_friends, total_friends, places visited by friend)
+# 3) strangers: a dictionary where the key is the name of the stranger and the value as a list of places he has visited
+# 4) sentiments: a dictionary where the key is the name of the location and the value is the sentiment score of the location, with zero score for neutral sentiment,
+				 positive value for positive sentiment and negative score for negative sentiment
+# 5) k: how many neighbors to consider for collaborative filtering
+"""
 @app.route('/')
 def main():
 	k = 3
@@ -111,3 +111,5 @@ def main():
 	sentiments = request.args.json('sentiments')
 	recommendations = {'ans': recommend(visited_places, friends, strangers, sentiments, k)}
 	return flask.jsonify(**recommendations)
+
+app.run(host='localhost')

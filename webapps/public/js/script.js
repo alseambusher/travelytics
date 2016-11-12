@@ -26,3 +26,40 @@ function messageBox(body, title, ok_text, close_text, callback){
 	$("#popup").modal("show");
 }
 /*********** dash actions ****************/
+
+function my_location(){
+		FB.api('/me/tagged_places', 'GET', (data) => {
+			data = data.data;
+			var output = "<div class='list-group'>";
+			for (var i=0; i<data.length; i++){
+				output += `<a href="#" class="list-group-item ` + (i%2==0? "active" : "") + `">
+				<b class="list-group-item-heading">` + data[i].place.name+ `</b>
+				<p class="list-group-item-text">` + data[i].place.location.city + `</p>
+				</a>`;
+			}
+			output += "</div>";
+			console.log(data);
+			infoMessageBoxLg(output, "My Locations");
+		});
+}
+
+function set_username(){
+	FB.api('/me', 'get', (data)=>{
+		document.getElementById("username").innerHTML = data.name ? data.name : "";
+	});
+}
+
+function put_url_data(){
+	var data = {};
+	FB.api('/me', 'get', (user) => {
+		data.name = user.name;
+		data.id= user.id;
+		FB.api('/me/tagged_places', 'get', (places) => {
+			data.places = places;
+			FB.api("/me/friends", "GET", (friends) => {
+				data.friends = friends;
+				$.post( "/", data, function() {}, "json");
+			});
+		});
+	});
+}
