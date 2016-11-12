@@ -1,8 +1,9 @@
 city = {name: 'City', latitude: -25.363, longitude: 131.044};
 latlng = {lat : -25.363, lng : 131.044};
+var map;
 function initMap() {
     //Initialize a map
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 4,
         center: {lat : city['latitude'], lng : city['longitude']}
     });
@@ -17,11 +18,12 @@ function initMap() {
 
     //Order the points
     //location = city;
-    
+
     locations = [{name: 'AAAAA', latitude: -24.363, longitude: 131.044}, {name: 'BBBBB', latitude: -26.363, longitude: 131.044}]
     //Plot the points
 
     //Plot the paths
+    document.getElementById("map").style.position = "static";
 }
 
 function drawMarker(map, location) {
@@ -30,5 +32,4 @@ function drawMarker(map, location) {
         map: map,
         title: location['name']
     });
-
 }

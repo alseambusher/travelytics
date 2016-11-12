@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="material.min.css">
 	<link rel="stylesheet" href="map.css">
 	<script src="material.min.js"></script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOALyWOCCU8aeFjZkBGEKywc9VnSQlg74&callback=initMap"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<script type="text/javascript">
 	var routes = [];
@@ -19,23 +20,31 @@
 		$('[data-toggle="tooltip"]').tooltip();
 		routes = JSON.parse('<%- routes %>');
 		options = JSON.parse('<%- options %>');
+		setTimeout(()=>{document.getElementById("map").style.position = "static";initMap();}, 1000);
 	})
 	</script>
 </head>
 <body>
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) return;
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=261875493852637";
-		fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId      : '1015336085244830',
+	      xfbml      : true,
+	      version    : 'v2.8'
+	    });
+	  };
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "//connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
 	<% include navbar.ejs %>
 	<% include popup.ejs %>
-	<div id="map"></div>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOALyWOCCU8aeFjZkBGEKywc9VnSQlg74&callback=initMap">
-    </script>
+	
+</div>
 </body>
 </html>
