@@ -44,6 +44,14 @@
 	     js.src = "//connect.facebook.net/en_US/sdk.js";
 	     fjs.parentNode.insertBefore(js, fjs);
 	   }(document, 'script', 'facebook-jssdk'));
+
+		 function test(){
+			 FB.api('/me/tagged_places', 'get', (data)=>{console.log(data)});
+		 }
+
+		 function test2(){
+			 FB.api("/me/friends", "GET", (data)=>{console.log(data);})
+		 }
 	</script>
 	<% include navbar.ejs %>
 	<% include popup.ejs %>
