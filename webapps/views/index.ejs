@@ -20,7 +20,10 @@
 		$('[data-toggle="tooltip"]').tooltip();
 		routes = JSON.parse('<%- routes %>');
 		options = JSON.parse('<%- options %>');
-		setTimeout(()=>{document.getElementById("map").style.position = "static";initMap();}, 1000);
+		setTimeout(()=>{
+			document.getElementById("map").style.position = "static";
+			google.maps.event.trigger(document.getElementById("map"), 'resize');
+		}, 1000);
 	})
 	</script>
 </head>
@@ -44,7 +47,7 @@
 	</script>
 	<% include navbar.ejs %>
 	<% include popup.ejs %>
-	
+
 </div>
 </body>
 </html>

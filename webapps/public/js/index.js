@@ -23,8 +23,7 @@ function initMap() {
     //Plot the points
 
     //Plot the paths
-    document.getElementById("map").style.position = "static";
-}
+  }
 
 function drawMarker(map, location) {
     var marker = new google.maps.Marker({
