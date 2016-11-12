@@ -6,8 +6,8 @@
 	<script src="bootstrap.min.js"></script>
 	<link rel="stylesheet" href="bootstrap.min.css" />
 	<link rel="stylesheet" href="style.css" />
-	<link rel="stylesheet" href="/node_modules/material-design-lite/material.min.css">
-	<script src="/node_modules/material-design-lite/material.min.js"></script>
+	<link rel="stylesheet" href="material.min.css">
+	<script src="material.min.js"></script>
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<script type="text/javascript">
 	var routes = [];
@@ -20,7 +20,16 @@
 	</script>
 </head>
 <body>
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=261875493852637";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
 	<% include navbar.ejs %>
 	<% include popup.ejs %>
+
 </body>
 </html>

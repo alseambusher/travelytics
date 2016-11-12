@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/public/css'));
 app.use(express.static(__dirname + '/public/js'));
+app.use(express.static(__dirname + '/node_modules/material-design-lite'));
 app.set('views', __dirname + '/views');
 
 //set port
