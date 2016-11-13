@@ -11,17 +11,9 @@ function initMap() {
         zoom: 2,
         center: {lat : 45, lng : 0}
     });
-<<<<<<< HEAD
-    
-    //Access API endpoint to find lat lng values of all the four points
-=======
-
-    //Plot a marker at the airport of the city
-    center = drawMarker(map, city);
 
     //Access API endpoint to get top popular spots
     var locations;
->>>>>>> 265152ab37bb51210afa66968f8ae1fa52832ff6
     $.ajax({
         method: "POST",
         url: 'http://12c43d9b.ngrok.io/nearestAirport',
@@ -32,6 +24,7 @@ function initMap() {
             destination = data['destination'];
             fromAirport = data['fromAirport'];
             toAirport = data['toAirport'];
+            stops = data['stops'];
             //console.log(home, destination, fromAirport, toAirport);
             
             //Plot a marker at the airport of the toAirport
@@ -62,7 +55,7 @@ function initMap() {
                     //console.log(toAirport, path[0])
                     plotPath(map, toAirport, path[0], 1);
                     plotPath(map, home, fromAirport, 1);
-                    plotFlightPath(map, fromAirport, toAirport);
+                    plotFlightPath(map, fromAirport, toAirport, stops);
                     //Draw path from home to airport
 
                     //Draw path from airport1 to airport2
@@ -126,7 +119,6 @@ function plotLocations(map, locations) {
         drawMarker(map, locations[i]);
     }
 }
-<<<<<<< HEAD
 
 function plotRoute(map, path) {
     for(i = 0; i < path.length - 1; i++) {
@@ -153,7 +145,8 @@ function plotPath(map, start, end, type){
     });
 }
 
-function plotFlightPath(map, fromAirport, toAirport){
+function plotFlightPath(map, fromAirport, toAirport, stops){
+    var flightPlanCoordinates
     var flightPlanCoordinates = [
         new google.maps.LatLng(fromAirport['latitude'], fromAirport['longitude']),
         new google.maps.LatLng(toAirport['latitude'], toAirport['longitude']),
@@ -166,5 +159,4 @@ function plotFlightPath(map, fromAirport, toAirport){
     });
     flightPath.setMap(map);
 }
-=======
->>>>>>> 265152ab37bb51210afa66968f8ae1fa52832ff6
+
