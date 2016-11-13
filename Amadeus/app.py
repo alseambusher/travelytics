@@ -115,14 +115,14 @@ def findNearestAirportAmongTwo(lat1, lng1, lat2, lng2):
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
     r = requests.get(baseurl+secret+'&latitude='+str(lat1)+'&longitude='+str(lng1))
     
-    #o_airport = r.json()
-    o_airport = sorted(r.json(), key=lambda x: x['distance'])
+    o_airport = r.json()
+    #o_airport = sorted(r.json(), key=lambda x: x['distance'])
     #o_airport = o_airport[0]['airport']   # Take the nearest airport
     
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
     r = requests.get(baseurl+secret+'&latitude='+str(lat2)+'&longitude='+str(lng2))
-    #d_airport = r.json()
-    d_airport = sorted(r.json(), key=lambda x: x['distance'])
+    d_airport = r.json()
+    #d_airport = sorted(r.json(), key=lambda x: x['distance'])
     #d_airport = d_airport[0]['airport'] # Take the nearest airport
 
     # Run till found direct or indirect flight
@@ -259,4 +259,4 @@ def findNearestAirportAmongTwo(lat1, lng1, lat2, lng2):
     return {"stops": [], "price" : 0}
     
 # Run
-app.run(threaded=True,debug=True)
+app.run(host='0.0.0.0',threaded=True,debug=True)
