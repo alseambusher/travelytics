@@ -1,51 +1,79 @@
-city = {name: 'New York', latitude: -25.363, longitude: 131.044, description: "", categories: [], image: ""};
-latlng = {lat : -25.363, lng : 131.044};
-var map;
+//home = {name: 'Home', latitude: 34.0224, longitude: -118.25, description: "", categories: [], image: ""};
+//destination = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
+//fromAirport = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
+//toAirport = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
+var homeName = "London"
+var destinationName = "Los Angeles"
+var base_url = 'http://12c43d9b.ngrok.io/'
 function initMap() {
     //Initialize a map
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 4,
-        center: {lat : city['latitude'], lng : city['longitude']}
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 2,
+        center: {lat : 45, lng : 0}
     });
-
-    //Plot a marker at the airport of the city
-    center = drawMarker(map, city)
-
-    //Access API endpoint to get top popular spots
-    var locations;
+    
+    //Access API endpoint to find lat lng values of all the four points
     $.ajax({
         method: "POST",
-        url: 'http://ff30052b.ngrok.io/interest',
-        data: JSON.stringify({city : city['name']}),
+        url: 'http://12c43d9b.ngrok.io/nearestAirport',
+        data: JSON.stringify({source : homeName, destination : destinationName}),
         contentType: 'application/json',
         success: function(data){
-            console.log(data);
-            locations = data['locations']
-            console.log(locations);
-
-            //Get distance matrix
-
-            //Order the points
-            //location = city;
-
+            home = data['home'];
+            destination = data['destination'];
+            fromAirport = data['fromAirport'];
+            toAirport = data['toAirport'];
+            //console.log(home, destination, fromAirport, toAirport);
             
-            //locations = [{name: 'AAAAA', latitude: -20.363, longitude: 135.044, description: "adkh", categories: [], image: ""}, {name: 'BBBBB', latitude: -29.363, longitude: 126.044, description: "lksajkl", categories: [], image: ""}]
+            //Plot a marker at the airport of the toAirport
+            toAirportMarker = drawMarker(map, toAirport);
+            fromAirportMarker = drawMarker(map, fromAirport);
+            homeMarker = drawMarker(map, home);
+            //Access API endpoint to get top popular spots
+            var locations;
+            $.ajax({
+                method: "POST",
+                url: 'http://12c43d9b.ngrok.io/interest',
+                data: JSON.stringify({toAirport : destination['name']}),
+                contentType: 'application/json',
+                success: function(data2){
+                    //console.log(data);
+                    console.log(data2);
+                    locations = data2['locations']
+                    //console.log(locations);
 
-            //Plot the points
-            plotLocations(map, locations);
+                    //Get distance matrix
+                    var path = getPath(toAirport, locations);
+                    console.log(path);
+                    //Plot the points
+                    plotLocations(map, locations);
 
-            //Plot the paths
-            plotPaths(map, locations);
+                    //Plot the paths
+                    plotRoute(map, path);
+                    //console.log(toAirport, path[0])
+                    plotPath(map, toAirport, path[0], 1);
+                    plotPath(map, home, fromAirport, 1);
+                    plotFlightPath(map, fromAirport, toAirport);
+                    //Draw path from home to airport
+
+
+                    //Draw path from airport1 to airport2
+
+                }
+            });
         }
-    });
+    }); 
 }
 
-
+// Takes 2 arduments
+// 1. google map object
+// 2. location object having keys (name, latitude, longitude, description, image, categories)
 function drawMarker(map, location) {
     var marker = new google.maps.Marker({
         position: {lat : location['latitude'], lng : location['longitude']},
         map: map,
-        title: location['name']
+        title: location['name'],
+        animation: google.maps.Animation.DROP
     });
     var contentString = '<div id="' + location['name'] + '">'+
         '<div id="siteNotice">'+
@@ -91,17 +119,15 @@ function plotLocations(map, locations) {
     }
 }
 
-function plotPaths(map, locations) {
-    
-
-    //plotPath(directionsService, directionsDisplay);
-    for(i = 0; i < locations.length - 1; i++){
-        plotPath(map, locations[i], locations[i + 1])
+function plotRoute(map, path) {
+    for(i = 0; i < path.length - 1; i++) {
+        plotPath(map, path[i], path[i + 1], "green")
     }
 }
 
-function plotPath(map, start, end) {
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+function plotPath(map, start, end, type){
+    //console.log(start, end);
+    var directionsDisplay = new google.maps.DirectionsRenderer;//{ polylineOptions: { strokeColor: "#8b0013" } };
     var directionsService = new google.maps.DirectionsService;
     directionsDisplay.setMap(map);
     directionsDisplay.setOptions( { suppressMarkers: true } );
@@ -116,4 +142,18 @@ function plotPath(map, start, end) {
             window.alert('Directions request failed due to ' + status);
         }
     });
+}
+
+function plotFlightPath(map, fromAirport, toAirport){
+    var flightPlanCoordinates = [
+        new google.maps.LatLng(fromAirport['latitude'], fromAirport['longitude']),
+        new google.maps.LatLng(toAirport['latitude'], toAirport['longitude']),
+    ];
+    var flightPath = new google.maps.Polyline({
+        path: flightPlanCoordinates,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+    flightPath.setMap(map);
 }
