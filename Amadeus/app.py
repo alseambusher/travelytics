@@ -92,16 +92,16 @@ def interest():
     if request.method == 'POST': 
         print request.json
     
-        if not request.json['city']:
+        if not request.json['toAirport']:
             rsp = "City can't be blank. Please try again."
             return render_template('index.html',rsp=rsp)
     
         f = open('cities.txt','r')
         for city in f.readlines():
-            if city[:-1] == str(request.json['city']):
+            if city[:-1] == str(request.json['toAirport']):
                 break
         
-        if city[:-1] == str(request.json['city']):
+        if city[:-1] == str(request.json['toAirport']):
             baseurl = 'https://api.sandbox.amadeus.com/v1.2/points-of-interest/yapq-search-text?apikey='
             r = requests.get(baseurl+secret+'&city_name='+city[:-1])
             
@@ -229,4 +229,4 @@ def findNearestAirportAmongTwo(lat1, lng1, lat2, lng2):
     return {'origin':origin_airports[i], 'destination': destination_airports[j]}
     
 # Run
-app.run(host='0.0.0.0',threaded=True,debug=True)
+app.run(threaded=True,debug=True)
