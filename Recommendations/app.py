@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request,jsonify
 from flask.ext.cors import CORS, cross_origin
 app = Flask(__name__)
 cors = CORS(app)
@@ -45,10 +45,10 @@ def sort_by_sentiment(suggestions, sentiments):
 	for suggestion in suggestions:
 		count = suggestion[0]
 		loc_name = suggestion[1]
-		if sentiment[loc_name] == 0:
+		if sentiments[loc_name] == 0:
 			neutral_scores.append(loc_name) #suggestions are already sorted so no need of storing the count for neutral cases
-		elif sentiment[loc_name] > 0:
-			pos_scores.append((count * sentiment[loc_name], loc_name))
+		elif sentiments[loc_name] > 0:
+			pos_scores.append((count * sentiments[loc_name], loc_name))
 		else:
 			continue
 	pos_scores.sort()
@@ -82,14 +82,14 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 	nn_mat = [] #contains the matrix containing 0/1 for the places visited by a particular user
 
 	#first row is our user and the rest rows are the k nearest neighbors
-	nn_mat.append(create_row(visited_places, all_locations))
+	nn_mat.append(create_rows(visited_places, all_locations))
 	#add all the other users i.e. friends and strangers to the matrix
 	for usr in nearest_neighbors:
-		if usr in friends:
-			usr_places = friends[usr][2]
+		if usr[1] in friends:
+			usr_places = friends[usr[1]]
 		else:
-			usr_places = strangers[usr]
-		nn_mat.append(create_row(usr_places, all_locations))
+			usr_places = strangers[usr[1]]
+		nn_mat.append(create_rows(usr_places, all_locations))
 	#retrieve suggestions of the form (total number of users recommending to visit a place, name of the location)
 	suggestions = collab_filtering(nn_mat, all_locations)
 	return sort_by_sentiment(suggestions, sentiments)
@@ -132,14 +132,10 @@ def main():
 	people = request.json['people']
 	friends, place_info = prep_input(friends, place_info)
 	strangers, place_info = prep_input(people, place_info, friend=False, friend_dict=friends)
-	unfrmtd_sentiments = request.json['sentiments']
-	sentiments = {}
-	for loc in unfrmtd_sentiments:
-		if 'city' in loc:
-			sentiments[loc['city']] = unfrmtd_sentiments[loc]
+	sentiments = request.json['sentiments']
 	locations = recommend(visited_places, friends, strangers, sentiments, k)
 	recommendations = {'ans': [place_info[location] for location in locations]}
-	return flask.jsonify(**recommendations)
+	return jsonify(**recommendations)
 
 
 @app.route('/', methods=['GET'])

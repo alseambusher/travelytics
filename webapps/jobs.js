@@ -24,7 +24,7 @@ exports.get_friend_stranger_locations = function(uid, callback){
     for(let i=0; i<docs[0].places.data.length; i++){
       data.visited_places.push(docs[0].places.data[i].place.location);
     }
-    data.friends = [];
+    data.friends = {};
     for(let i=0; i<docs[0].friends.data.length; i++){
       let friend = {};
       let fname = docs[0].friends.data[i].name;
@@ -32,25 +32,29 @@ exports.get_friend_stranger_locations = function(uid, callback){
       let f_id = docs[0].friends.data[i].id;
       db.find({id: f_id}, function(ferr, fdocs) {
         for (let j=0; j<fdocs[0].places.data.length; j++) {
-          friend[fname].push(fdocs[0].places.data[j].place.location);
+          if (fdocs[0].places.data[j].place.location && fdocs[0].places.data[j].place.location.city)
+            friend[fname].push(fdocs[0].places.data[j].place.location);
         }
       });
-      data.friends.push(friend);
+      if (friend[fname])
+        data.friends[fname] = friend[fname];
     }
     db.find({}, function(err, docs) {
-      data.people = [];
+      data.people = {};
       for (let i=0; i<docs.length; i++){
         let person = {};
         let pname = docs[i].name;
+        let pid = docs[i].id;
         person[pname] = [];
         for(let j=0; j<(docs[i].places.data ? docs[i].places.data.length : 0); j++){
-          person[pname].push(docs[i].places.data[j].place.location);
           if (docs[i].places.data[j].place.location && docs[i].places.data[j].place.location.city) {
+            person[pname].push(docs[i].places.data[j].place.location);
             all_locations[docs[i].places.data[j].place.location.city] = 0.4;
           }
         }
         if (docs[i].places.data) {
-          data.people.push(person);
+          if (uid != pid)
+            data.people[pname] = person[pname];
           data.sentiments = all_locations;
         }
       }
