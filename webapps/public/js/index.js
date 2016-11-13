@@ -146,6 +146,7 @@ function plotPath(map, start, end, type){
 }
 
 function plotFlightPath(map, fromAirport, toAirport, stops){
+    console.log(stops);
     var flightPlanCoordinates = new Array(1 + stops.length + 1);
     for(var i = 0; i < stops.length; i++){
         drawMarker(map, stops[i]);
@@ -155,6 +156,7 @@ function plotFlightPath(map, fromAirport, toAirport, stops){
     for(var i = 1; i <= stops.length; i++) {
         flightPlanCoordinates[i] = new google.maps.LatLng(stops[i - 1]['latitude'], stops[i - 1]['longitude'])
     }
+    console.log(flightPlanCoordinates);
     var flightPath = new google.maps.Polyline({
         path: flightPlanCoordinates,
         strokeColor: "#FF0000",
@@ -162,4 +164,11 @@ function plotFlightPath(map, fromAirport, toAirport, stops){
         strokeWeight: 2
     });
     flightPath.setMap(map);
+}
+
+function onClickEventHandler(latitude, longitude) {
+    var map = document.getElementById("map");
+    var center = new google.maps.LatLng(latitude, longitude);
+    map.panTo(center);
+    map.setZoom(10);
 }
