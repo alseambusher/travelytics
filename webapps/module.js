@@ -25,8 +25,14 @@ exports.get_sentiment_url = function(url, callback){
 };
 
 exports.get_travel_blog_sentiment = function(place, callback) {
-  $.get(urls.MS + "search/" + place + " travel blogs/1", (data) => {
-    console.log(data);
+  rest.get(urls.MS + "search/" + place + " travel blogs/1", (data) => {
+    console.log(data[0]);
+  });
+};
+
+exports.get_all_travel_urls = function(){
+  Object.keys(cities).forEach((key)=>{
+    exports.get_travel_blog_sentiment(key, console.log);
   });
 };
 

@@ -92,6 +92,7 @@ function plan_trip_form(){
 								google.maps.event.trigger(document.getElementById("map"), 'resize');
 							}, 1000);
 							document.getElementById("places_in_location").style.display = "inline";
+							document.getElementById("places_in_itinenary").style.display = "inline";
 							document.getElementById("location").innerHTML = data.matches[i];
 							document.getElementById("place_list").innerHTML = "";
 							document.getElementById("place_itinenary").innerHTML = "";

@@ -21,7 +21,8 @@ function initMap(hname, dname) {
         data: JSON.stringify({source : hname ? hname : homeName, destination : dname ? dname : destinationName}),
         contentType: 'application/json',
         success: function(data){
-            set_price(data.price);
+            if(data.price)
+              set_price(data.price);
             home = data['home'];
             destination = data['destination'];
             fromAirport = data['fromAirport'];
@@ -47,8 +48,26 @@ function initMap(hname, dname) {
                     //console.log(locations);
 
                     // TODO make this in order
+                    add_to_itinenary_list(fromAirport.name, ()=>{
+                        onClickEventHandler(fromAirport.latitude, fromAirport.longitude);
+                    });
+
+                    stops.forEach((elt) => {
+                      add_to_itinenary_list(elt.name, ()=> {
+                        onClickEventHandler(elt.latitude, elt.longitude);
+                      });
+                    });
+
+                    add_to_itinenary_list(toAirport.name, ()=>{
+                        onClickEventHandler(toAirport.latitude, toAirport.longitude);
+                    });
+
                     locations.forEach((elt) => {
                       add_to_place_list(elt.name, ()=> {
+                        onClickEventHandler(elt.latitude, elt.longitude);
+                      });
+
+                      add_to_itinenary_list(elt.name, ()=> {
                         onClickEventHandler(elt.latitude, elt.longitude);
                       });
                     });
