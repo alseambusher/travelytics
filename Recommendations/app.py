@@ -77,7 +77,7 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 		#score = (total common places visited by strangers and our user) / (sum of all the places visited by each of them) + (#mutal_friends / #friends)
 		#the second term can be thought of giving a positive weight to close friends
 		current_score = (float(common) / total_places) + (float(total_mutal_frnds) / total_friends)
-		users_scores.append(current_score, i)
+		users_scores.append((current_score, i))
 	#sort all the users based on the score
 	users_scores.sort(reverse=True)
 	nearest_neighbors = users_scores[:k]
