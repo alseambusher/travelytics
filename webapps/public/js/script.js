@@ -85,20 +85,46 @@ function plan_trip_form(){
 						a.innerHTML = document.getElementById("plan_trip_source").value + ' <i class="material-icons">trending_flat</i> ' + data.matches[i];
 						document.getElementById("trip_switcher").appendChild(a);
 						a.onclick = function(){
+							show_progress_bar();
 							initMap(document.getElementById("plan_trip_source").value, data.matches[i]);
 							setTimeout(()=>{
-						document.getElementById("map").style.position = "static";
-						google.maps.event.trigger(document.getElementById("map"), 'resize');
-					}, 1000);
+								document.getElementById("map").style.position = "static";
+								google.maps.event.trigger(document.getElementById("map"), 'resize');
+							}, 1000);
+							document.getElementById("places_in_location").style.display = "inline";
+							document.getElementById("location").innerHTML = data.matches[i];
+							document.getElementById("place_list").innerHTML = "";
+							document.getElementById("itinenary_list").innerHTML = "";
 						};
 					}
-					initMap(document.getElementById("plan_trip_source").value, data.matches[0]);
-					setTimeout(()=>{
-						document.getElementById("map").style.position = "static";
-						google.maps.event.trigger(document.getElementById("map"), 'resize');
-					}, 1000);
 				});
 				//
 			});
 		});
 	}
+
+function add_to_place_list(place, click){
+	let li = document.createElement("li");
+	li.innerHTML = place;
+	li.onclick = click;
+	li.className = "mdl-menu__item";
+	document.getElementById("place_list").appendChild(li);
+}
+
+function add_to_itinenary_list(place, click){
+	let li = document.createElement("li");
+	li.innerHTML = place;
+	li.onclick = click;
+	li.className = "mdl-menu__item";
+	document.getElementById("itinenary_list").appendChild(li);
+}
+
+function show_progress_bar(){
+	document.getElementById("progress_bar").style.visibility = "visible";
+}
+function hide_progress_bar(){
+	document.getElementById("progress_bar").style.visibility = "hidden";
+}
+function set_price(value){
+	document.getElementById("price").innerHTML = "$"+value;
+}

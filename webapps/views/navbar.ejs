@@ -2,19 +2,30 @@
 mdl-layout--fixed-header">
 <header class="mdl-layout__header">
   <div class="mdl-layout__header-row">
-    <!-- Left aligned menu below button -->
+
+    <span id="places_in_location" style="display:none">
     <button id="demo-menu-lower-left"
     class="mdl-button mdl-js-button mdl-button--icon">
     <i class="material-icons">more_vert</i>
-  </button>  Places in San Francisco
+  </button>  Places in <span id="location"></span>
 
   <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-  for="demo-menu-lower-left">
-  <li class="mdl-menu__item">Some Action</li>
-  <li class="mdl-menu__item mdl-menu__item--full-bleed-divider">Another Action</li>
-  <li disabled class="mdl-menu__item">Disabled Action</li>
-  <li class="mdl-menu__item">Yet Another Action</li>
+  for="demo-menu-lower-left" id="place_list">
   </ul>
+  </span>
+
+    <span id="places_in_itinenary" style="display:none">
+    <button id="demo-menu-lower-left"
+    class="mdl-button mdl-js-button mdl-button--icon">
+    <i class="material-icons">more_vert</i>
+  </button> Itinerary
+
+  <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+  for="demo-menu-lower-left" id="place_itinenary">
+  </ul>
+  </span>
+
+  <span id="price" style="padding-left:10px"></span>
 
     <div class="mdl-layout-spacer"></div>
     <nav class="mdl-navigation mdl-layout--large-screen-only">
@@ -40,6 +51,7 @@ mdl-layout--fixed-header">
     <a class="mdl-navigation__link" onclick="my_location()">My Locations</a>
     <a class="mdl-navigation__link" href=""><div class="fb-login-button" data-max-rows="1" data-size="medium" data-show-faces="false" data-auto-logout-link="true" data-scope="user_tagged_places,user_friends"></div></a>
   </nav>
+    <div id="progress_bar" class="mdl-progress mdl-js-progress mdl-progress__indeterminate" style="visibility:hidden"></div>
     <nav class="mdl-navigation" id="trip_switcher"></nav>
 </div>
   <main class="mdl-layout__content">

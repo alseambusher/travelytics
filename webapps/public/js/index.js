@@ -2,12 +2,13 @@
 //destination = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
 //fromAirport = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
 //toAirport = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
-var homeName = "London"
-var destinationName = "Los Angeles"
+var homeName = ""
+var destinationName = ""
 var base_url = 'http://12c43d9b.ngrok.io/'
+var map;
 function initMap(hname, dname) {
     //Initialize a map
-    var map = new google.maps.Map(document.getElementById('map'), {
+    map = new google.maps.Map(document.getElementById('map'), {
         zoom: 2,
         center: {lat : 45, lng : 0}
     });
@@ -20,6 +21,7 @@ function initMap(hname, dname) {
         data: JSON.stringify({source : hname ? hname : homeName, destination : dname ? dname : destinationName}),
         contentType: 'application/json',
         success: function(data){
+            set_price(data.price);
             home = data['home'];
             destination = data['destination'];
             fromAirport = data['fromAirport'];
@@ -44,6 +46,13 @@ function initMap(hname, dname) {
                     locations = data2['locations']
                     //console.log(locations);
 
+                    // TODO make this in order
+                    locations.forEach((elt) => {
+                      add_to_place_list(elt.name, ()=> {
+                        onClickEventHandler(elt.latitude, elt.longitude);
+                      });
+                    });
+
                     //Get distance matrix
                     var path = getPath(toAirport, locations);
                     console.log(path);
@@ -56,6 +65,7 @@ function initMap(hname, dname) {
                     plotPath(map, toAirport, path[0], 1);
                     plotPath(map, home, fromAirport, 1);
                     plotFlightPath(map, fromAirport, toAirport, stops);
+                    hide_progress_bar();
                     //Draw path from home to airport
 
                     //Draw path from airport1 to airport2
@@ -167,8 +177,7 @@ function plotFlightPath(map, fromAirport, toAirport, stops){
 }
 
 function onClickEventHandler(latitude, longitude) {
-    var map = document.getElementById("map");
     var center = new google.maps.LatLng(latitude, longitude);
     map.panTo(center);
-    map.setZoom(10);
+    map.setZoom(15);
 }
