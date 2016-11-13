@@ -83,16 +83,7 @@ def getFlightInfo(airport1, airport2, date):
         a.append(suggestion)
         suggestions['results'] = a
     
-    '''
-    E.g.
-    46.6734
-    -71.7412
-    53.42133
-    -6.27008
-    2016-11-16
-    '''
-    
-    print suggestions
+    #print suggestions
   
     return suggestions
 

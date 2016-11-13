@@ -69,15 +69,13 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 		#score = (total common places visited by strangers and our user) / (sum of all the places visited by each of them)
 		users_scores.append((float(common) / total_places, i))
 	for i in friends:
-		total_mutal_frnds = friends[i][0]
-		total_friends = friends[i][1]
-		friend_visited = friends[i][2]
+		friend_visited = friends[i]
 		common, all_locations = count_common(visited_places, friend_visited, all_locations)
 		total_places = len(friend_visited) + usr_visited_len - common
 		#score = (total common places visited by strangers and our user) / (sum of all the places visited by each of them) + (#mutal_friends / #friends)
 		#the second term can be thought of giving a positive weight to close friends
-		current_score = (float(common) / total_places) + (float(total_mutal_frnds) / total_friends)
-		users_scores.append(current_score, i)
+		current_score = 2 * (float(common) / total_places)
+		users_scores.append((current_score, i))
 	#sort all the users based on the score
 	users_scores.sort(reverse=True)
 	nearest_neighbors = users_scores[:k]
@@ -95,11 +93,25 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 	#retrieve suggestions of the form (total number of users recommending to visit a place, name of the location)
 	suggestions = collab_filtering(nn_mat, all_locations)
 	return sort_by_sentiment(suggestions, sentiments)
+
+def prep_input(user_dict, place_info, friend=True, friend_dict={}):
+	required_frmt = {}
+	for user in user_dict:
+		place_info[user['city']] = user_dict[user]
+		if not friend:
+			if user in friend_dict:
+				continue
+		if user not in required_frmt:
+			required_frmt[user] = [user['city']]
+		elif user['city'] not in required_frmt[user]:
+			required_frmt[user].append(user['city'])
+	return required_frmt, place_info
+		
 """
 # Takes 3 arguments:
 # 1) visted_places: a list containing the places our user has visited
-# 2) friends: a dictionary where is the key is the name of the friend and value is a tuple of the form (#mutal_friends, total_friends, places visited by friend)
-# 3) strangers: a dictionary where the key is the name of the stranger and the value as a list of places he has visited
+# 2) friends: a dictionary where is the key is the name of the friend and value list of places visited by the friend
+# 3) people: a dictionary where the key is the name of the stranger and the value as a list of places he has visited
 # 4) sentiments: a dictionary where the key is the name of the location and the value is the sentiment score of the location, with zero score for neutral sentiment,
 				 positive value for positive sentiment and negative score for negative sentiment
 # 5) k: how many neighbors to consider for collaborative filtering
@@ -108,11 +120,21 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 @cross_origin()
 def main():
 	k = 3
-	visited_places = request.json('visited_places')
+	visited_places = []
+	strangers = {}
+	visited_places_dict = request.json('visited_places')
+	place_info = {}
+	for location in visited_places_dict:
+		if location['city'] not in visited_places:
+			visited_places.append(location['city'])
+		place_info[location] = location
 	friends = request.args.json('friends')
-	strangers = request.args.json('strangers')
+	people = request.args.json('people')
+	friends, place_info = prep_input(friends, place_info)
+	strangers, place_info = prep_input(people, place_info, friend=False, friend_dict=friends)
 	sentiments = request.args.json('sentiments')
-	recommendations = {'ans': recommend(visited_places, friends, strangers, sentiments, k)}
+	locations = recommend(visited_places, friends, strangers, sentiments, k)
+	recommendations = {'ans': [place_info[location] for location in locations]}
 	return flask.jsonify(**recommendations)
 
 
