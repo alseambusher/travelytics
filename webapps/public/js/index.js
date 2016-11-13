@@ -4,7 +4,7 @@
 //toAirport = {name: 'Glasgow', latitude: 55.8642, longitude: -4.2518, description: "", categories: [], image: ""};
 var homeName = ""
 var destinationName = ""
-var base_url = 'http://12c43d9b.ngrok.io/'
+var base_url = 'http://173.236.121.79:5000'
 var map;
 function initMap(hname, dname) {
     //Initialize a map
@@ -17,7 +17,7 @@ function initMap(hname, dname) {
     var locations;
     $.ajax({
         method: "POST",
-        url: 'http://12c43d9b.ngrok.io/nearestAirport',
+        url: 'http://173.236.121.79:5000/nearestAirport',
         data: JSON.stringify({source : hname ? hname : homeName, destination : dname ? dname : destinationName}),
         contentType: 'application/json',
         success: function(data){
@@ -37,7 +37,7 @@ function initMap(hname, dname) {
             var locations;
             $.ajax({
                 method: "POST",
-                url: 'http://12c43d9b.ngrok.io/interest',
+                url: 'http://173.236.121.79:5000/interest',
                 data: JSON.stringify({toAirport : destination['name']}),
                 contentType: 'application/json',
                 success: function(data2){

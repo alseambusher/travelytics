@@ -37,7 +37,7 @@ process.on('uncaughtException', function (error) {
 
 app.get(routes.root, function(req, res) {
   // dash.get_sentiment("this is some random text", console.log);
-  //dash.get_sentiment_url("http://www.willflyforfood.net/2015/04/20/the-first-timers-travel-guide-to-seoul-south-korea/", console.log);
+  // dash.get_sentiment_url("http://www.willflyforfood.net/2015/04/20/the-first-timers-travel-guide-to-seoul-south-korea/", console.log);
   res.render('index', {
     routes : JSON.stringify(routes),
     options : JSON.stringify({}),

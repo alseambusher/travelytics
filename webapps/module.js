@@ -25,7 +25,7 @@ exports.get_sentiment_url = function(url, callback){
 };
 
 exports.get_travel_blog_sentiment = function(place, callback) {
-  $.get(urls.MS + "search/" + place + " travel blogs/2", (data) => {
+  $.get(urls.MS + "search/" + place + " travel blogs/1", (data) => {
     console.log(data);
   });
 };

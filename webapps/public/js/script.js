@@ -94,7 +94,7 @@ function plan_trip_form(){
 							document.getElementById("places_in_location").style.display = "inline";
 							document.getElementById("location").innerHTML = data.matches[i];
 							document.getElementById("place_list").innerHTML = "";
-							document.getElementById("itinenary_list").innerHTML = "";
+							document.getElementById("place_itinenary").innerHTML = "";
 						};
 					}
 				});
@@ -116,7 +116,7 @@ function add_to_itinenary_list(place, click){
 	li.innerHTML = place;
 	li.onclick = click;
 	li.className = "mdl-menu__item";
-	document.getElementById("itinenary_list").appendChild(li);
+	document.getElementById("place_itinenary").appendChild(li);
 }
 
 function show_progress_bar(){
