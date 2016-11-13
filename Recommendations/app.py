@@ -94,17 +94,17 @@ def recommend(visited_places, friends, strangers, sentiments, k):
 	suggestions = collab_filtering(nn_mat, all_locations)
 	return sort_by_sentiment(suggestions, sentiments)
 
-def prep_input(user_dict, place_info, friend=True, friend_dict={}):
+def prep_input(user_dict , place_info, friend=True, friend_dict={}):
 	required_frmt = {}
 	for user in user_dict:
-		place_info[user['city']] = user_dict[user]
 		if not friend:
 			if user in friend_dict:
 				continue
-		if user not in required_frmt:
-			required_frmt[user] = [user['city']]
-		elif user['city'] not in required_frmt[user]:
-			required_frmt[user].append(user['city'])
+		required_frmt[user] = []
+		for location in user_dict[user]:
+			place_info[location['city']] = location
+			if location['city'] not in required_frmt[user]:
+				required_frmt[user].append(location['city'])
 	return required_frmt, place_info
 
 """
