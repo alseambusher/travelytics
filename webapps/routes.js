@@ -1,4 +1,5 @@
 exports.routes = {
 	"root" : "/",
-	"login" : "/fblogin"
+	"login" : "/fblogin",
+	"recommend": "/recommend"
 };

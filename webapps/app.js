@@ -38,7 +38,6 @@ process.on('uncaughtException', function (error) {
 app.get(routes.root, function(req, res) {
    //dash.get_sentiment("this is some random text", console.log);
   //dash.get_sentiment_url("http://www.willflyforfood.net/2015/04/20/the-first-timers-travel-guide-to-seoul-south-korea/", console.log);
-  dash.recommend("1379143015453595", console.log);
   res.render('index', {
     routes : JSON.stringify(routes),
     options : JSON.stringify({}),
@@ -48,7 +47,6 @@ app.get(routes.root, function(req, res) {
 app.post(routes.root, function(req, res) {
   if (req.body) {
     doc = req.body;
-    console.log(doc)
     jobs.add_or_update(doc);
   }
   res.json({});
@@ -56,6 +54,12 @@ app.post(routes.root, function(req, res) {
 
 app.listen(app.get('port'), function() {
   console.log("Running 8000");
+});
+
+app.get(routes.recommend, function (req, res) {
+  dash.recommend(req.query.uid, (data) => {
+    res.json({matches: data});
+  });
 });
 
 /*
