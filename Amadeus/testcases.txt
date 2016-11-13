@@ -1,0 +1,5 @@
+curl -H "Content-Type: application/json" -X POST -d '{"longitude1":46.6734,"latitude1":-71.7412,"longitude1":53.42133,"latitude1":-6.27008, "date":"2016-11-16"}' http://173.236.121.94/flight
+
+curl -H "Content-Type: application/json" -X POST -d '{"city":"Tel Aviv"}' http://173.236.121.94/interest
+
+curl -H "Content-Type: application/json" -X POST -d '{"source":"New York","destination":"Banglore"}' http://173.236.121.94/nearestAirport
