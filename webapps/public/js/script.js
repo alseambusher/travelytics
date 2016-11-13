@@ -71,9 +71,34 @@ function plan_trip_form(){
 		FB.api('/me', 'get', (user) => {
 			console.log(user)
 			$.get(routes.recommend + "?uid="+ user.id, function(data) {
-				console.log(data);
+					console.log(data.matches);
+					document.getElementById("trip_switcher").innerHTML = "";
+					if (data.matches.length > 0){
+						let a = document.createElement("a");
+						a.className = "mdl-navigation__link";
+						a.innerHTML = "<b>Suggestions</b>";
+						document.getElementById("trip_switcher").appendChild(a);
+					}
+					for (let i=0; i<data.matches.length; i++){
+						let a = document.createElement("a");
+						a.className = "mdl-navigation__link";
+						a.innerHTML = document.getElementById("plan_trip_source").value + ' <i class="material-icons">trending_flat</i> ' + data.matches[i];
+						document.getElementById("trip_switcher").appendChild(a);
+						a.onclick = function(){
+							initMap(document.getElementById("plan_trip_source").value, data.matches[i]);
+							setTimeout(()=>{
+						document.getElementById("map").style.position = "static";
+						google.maps.event.trigger(document.getElementById("map"), 'resize');
+					}, 1000);
+						};
+					}
+					initMap(document.getElementById("plan_trip_source").value, data.matches[0]);
+					setTimeout(()=>{
+						document.getElementById("map").style.position = "static";
+						google.maps.event.trigger(document.getElementById("map"), 'resize');
+					}, 1000);
+				});
+				//
 			});
-			// document.getElementById("plan_trip_source").value;
 		});
-	});
-}
+	}
