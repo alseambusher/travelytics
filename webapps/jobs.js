@@ -22,7 +22,7 @@ exports.get_friend_stranger_locations = function(uid, callback){
   db.find({id: uid}, function(err, docs) {
     data.visited_places = [];
     for(let i=0; i<docs[0].places.data.length; i++){
-      if (docs[0].places.data[i].place.location.city)
+      if (docs[0].places.data[i].place.location && docs[0].places.data[i].place.location.city)
         data.visited_places.push(docs[0].places.data[i].place.location);
     }
     data.friends = {};
