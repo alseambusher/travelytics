@@ -1,0 +1,14 @@
+applications:
+- path: .
+  memory: 256M
+  instances: 1
+  domain: mybluemix.net
+  name: challenge-alchemyapi
+  host: challenge-alchemyapi
+  disk_quota: 1024M
+  services:
+  - codechallenge-alchemyapi
+declared-services:
+  codechallenge-alchemyapi:
+    label: alchemy_api
+    plan: free

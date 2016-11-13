@@ -1,0 +1,20 @@
+{
+	"name": "NodejsStarterApp",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node app.js"
+	},
+	"dependencies": {
+		"express": "4.13.x",
+		"cfenv": "1.0.x",
+		"watson-developer-cloud": "2.2.0",
+		"request":"2.74.0",
+		"vcap_services": "0.2.0",
+		"body-parser": "latest"
+	},
+	"repository": {},
+	"engines": {
+		"node": "4.x"
+	}
+}
