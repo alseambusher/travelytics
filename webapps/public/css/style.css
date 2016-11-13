@@ -61,3 +61,7 @@
     height: 5em;
   }
 }
+
+.mdl-navigation__link {
+  cursor: pointer;
+}

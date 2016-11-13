@@ -4,4 +4,4 @@ crontabs/*.db
 crontabs/logs/*.log
 config
 bower_components
-tmp/jobs.db
+tmp/users.db

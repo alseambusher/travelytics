@@ -20,7 +20,8 @@
     "node-schedule": "latest",
     "nedb": "latest",
     "material-design-lite": "latest",
-    "urllib": "latest"
+    "urllib": "latest",
+    "geolib": "latest"
   },
   "engines": {
     "node": "latest"

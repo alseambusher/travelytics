@@ -11,8 +11,17 @@ function initMap() {
         zoom: 2,
         center: {lat : 45, lng : 0}
     });
+<<<<<<< HEAD
     
     //Access API endpoint to find lat lng values of all the four points
+=======
+
+    //Plot a marker at the airport of the city
+    center = drawMarker(map, city);
+
+    //Access API endpoint to get top popular spots
+    var locations;
+>>>>>>> 265152ab37bb51210afa66968f8ae1fa52832ff6
     $.ajax({
         method: "POST",
         url: 'http://12c43d9b.ngrok.io/nearestAirport',
@@ -56,7 +65,6 @@ function initMap() {
                     plotFlightPath(map, fromAirport, toAirport);
                     //Draw path from home to airport
 
-
                     //Draw path from airport1 to airport2
 
                 }
@@ -90,7 +98,7 @@ function drawMarker(map, location) {
         });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        }); 
+        });
     }
     catch(err){
         var e = marker._eventListeners[0];
@@ -108,7 +116,7 @@ function drawMarker(map, location) {
         });
         marker.addListener('click', function() {
             infowindow.open(map, marker);
-        }); 
+        });
     }
     //return marker;
 }
@@ -118,6 +126,7 @@ function plotLocations(map, locations) {
         drawMarker(map, locations[i]);
     }
 }
+<<<<<<< HEAD
 
 function plotRoute(map, path) {
     for(i = 0; i < path.length - 1; i++) {
@@ -157,3 +166,5 @@ function plotFlightPath(map, fromAirport, toAirport){
     });
     flightPath.setMap(map);
 }
+=======
+>>>>>>> 265152ab37bb51210afa66968f8ae1fa52832ff6

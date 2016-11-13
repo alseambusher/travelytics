@@ -1,0 +1,83 @@
+#loginModal {
+    width: 100%;
+    max-width: 1920px;
+}
+
+.modal{
+    top:15%;
+}
+
+#compareModal {
+    background : url('/static/images/painting_background.jpeg') no-repeat;
+    width: 100%;
+    max-width: 1920px;
+    background-size: 100%;
+}
+
+#new-user-text{
+    color:#737373;
+}
+
+#entity-container{
+    margin-top: 2%;
+}
+
+
+.btn-gray, .btn-gray:hover, .btn-gray:active, .btn-gray:visited {
+    background-color: #737373 !important;
+    border-color: #737373;
+}
+
+* {
+  -webkit-border-radius: 0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+}
+
+
+.btn-xlarge {
+    padding: 18px 28px;
+    font-size: 22px;
+    line-height: normal;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+}
+
+
+table {
+    font-family: 'Raleway', sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    table-layout:fixed;
+    float:left;
+    margin-left: 0;
+}
+
+td, th {
+    border-bottom: 1px solid #dddddd;
+    padding: 10px;
+    word-wrap:break-word;
+    height:38px;
+    vertical-align:center;
+}
+
+.right_align{
+  text-align: right;
+}
+
+.left_align{
+  text-align: left;
+}
+
+.center-align{
+      text-align: -webkit-center;
+}
+
+.cell_align{
+    padding:5px;
+}
+
+.header-font{
+    font-family: 'Raleway', sans-serif;
+}
