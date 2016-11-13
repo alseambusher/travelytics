@@ -63,3 +63,17 @@ function put_url_data(){
 		});
 	});
 }
+
+function plan_trip_form(){
+	let body = `<form><input placeholder="From" type="text" required="" id="plan_trip_source"></form>`;
+	messageBox(body, "Plan Trip", "Search", "Cancel", () => {
+		console.log("clicked")
+		FB.api('/me', 'get', (user) => {
+			console.log(user)
+			$.get(routes.recommend + "?uid="+ user.id, function(data) {
+				console.log(data);
+			});
+			// document.getElementById("plan_trip_source").value;
+		});
+	});
+}

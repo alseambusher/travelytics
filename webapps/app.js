@@ -61,33 +61,3 @@ app.get(routes.recommend, function (req, res) {
     res.json({matches: data});
   });
 });
-
-/*
- POSTing to root handles three things
- www, aem and diff
- Returns a json
- */
-// app.post(routes.root, function(req, res) {
-//   try{
-//     if (req.body.type_indicator == "www"){
-//       dash.www_get(req.body.path, (header) => {
-//         res.json(header);
-//       });
-//     } else if(req.body.type_indicator == "aem"){
-//       dash.acom_get(req.body.server, req.body.path, req.body.port, (result) => {
-//         result.req= req.body;
-//         res.json(result);
-//       });
-//     } else if(req.body.type_indicator == "diff"){
-//       let servers = req.body.vips;
-//       dash.acom_get(servers[0], req.body.path, req.body.port, (result) => {
-//         dash.acom_get(servers[1], req.body.path, req.body.port, (result2) => {
-//           res.json({diff: jsdiff.diffChars(result.body, result2.body)});
-//         }, true);
-//       }, true);
-//     }
-//   } catch(e) {
-//     res.status(500).json({error: e});
-//   }
-// });
-//

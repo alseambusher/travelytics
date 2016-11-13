@@ -9,7 +9,9 @@ var geolib = require("geolib");
 var urls = {
 	SENTIMENT: "http://challenge-alchemyapi.mybluemix.net/",
 	TEXT_EXTRACTION: "https://gateway-a.watsonplatform.net/calls/url/URLGetText?url={url}&outputMode=json&apikey=",
-	RECOMMENDATIONS: "http://173.236.121.93:5000/"
+	RECOMMENDATIONS: "http://173.236.121.93:5000/",
+  MS: "http://173.236.121.90:5000/",
+  AMADEUS: "http://173.236.121.94:5000/"
 };
 
 exports.get_sentiment = function(text, callback){
@@ -22,9 +24,17 @@ exports.get_sentiment_url = function(url, callback){
 	});
 };
 
+exports.get_travel_blog_sentiment = function(place, callback) {
+  $.get(urls.MS + "search/" + place + " travel blogs/2", (data) => {
+    console.log(data);
+  });
+};
+
 exports.recommend = function(uid, callback){
 	jobs.get_friend_stranger_locations(uid, (data) => {
+    console.log(data);
 			rest.post(urls.RECOMMENDATIONS, data, (raw) => {
+        console.log(raw);
 					raw = JSON.parse(raw).ans;
 					cities_recommend = new Set();
 					for (let i=0; i<raw.length; i++){
