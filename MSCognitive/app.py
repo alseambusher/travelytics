@@ -25,6 +25,9 @@ CORS(app)
 
 
 
+@app.route('/')
+def index():
+	return 'index page'
 
 @app.route('/translate',methods=['GET','POST'])
 def translate():
@@ -62,4 +65,4 @@ def search(query,num_links):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

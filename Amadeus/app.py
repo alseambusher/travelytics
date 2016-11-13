@@ -221,4 +221,4 @@ def findNearestAirport(lat1, lng1, lat2, lng2):
     return {'origin':origin_airports[i], 'destination': destination_airports[j]}
     
 # Run
-app.run(threaded=True,debug=True)
+app.run(host='0.0.0.0',threaded=True,debug=True)
