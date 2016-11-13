@@ -5,7 +5,7 @@
 var homeName = "London"
 var destinationName = "Los Angeles"
 var base_url = 'http://12c43d9b.ngrok.io/'
-function initMap() {
+function initMap(hname, dname) {
     //Initialize a map
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 2,
@@ -17,7 +17,7 @@ function initMap() {
     $.ajax({
         method: "POST",
         url: 'http://12c43d9b.ngrok.io/nearestAirport',
-        data: JSON.stringify({source : homeName, destination : destinationName}),
+        data: JSON.stringify({source : hname ? hname : homeName, destination : dname ? dname : destinationName}),
         contentType: 'application/json',
         success: function(data){
             home = data['home'];
@@ -25,8 +25,8 @@ function initMap() {
             fromAirport = data['fromAirport'];
             toAirport = data['toAirport'];
             stops = data['stops'];
-            //console.log(home, destination, fromAirport, toAirport);
-            
+            console.log(home, destination, fromAirport, toAirport);
+
             //Plot a marker at the airport of the toAirport
             toAirportMarker = drawMarker(map, toAirport);
             fromAirportMarker = drawMarker(map, fromAirport);
@@ -63,7 +63,7 @@ function initMap() {
                 }
             });
         }
-    }); 
+    });
 }
 
 // Takes 2 arduments
@@ -163,4 +163,3 @@ function plotFlightPath(map, fromAirport, toAirport, stops){
     });
     flightPath.setMap(map);
 }
-
