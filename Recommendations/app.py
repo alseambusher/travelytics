@@ -132,7 +132,11 @@ def main():
 	people = request.args.json('people')
 	friends, place_info = prep_input(friends, place_info)
 	strangers, place_info = prep_input(people, place_info, friend=False, friend_dict=friends)
-	sentiments = request.args.json('sentiments')
+	unfrmtd_sentiments = request.args.json('sentiments')
+	sentiments = {}
+	for loc in unfrmtd_sentiments:
+		if 'city' in loc:
+			sentiments[loc['city']] = unfrmtd_sentiments[loc]
 	locations = recommend(visited_places, friends, strangers, sentiments, k)
 	recommendations = {'ans': [place_info[location] for location in locations]}
 	return flask.jsonify(**recommendations)
