@@ -1,92 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
     <title>Cal Hacks 3.0</title>
-    <meta name="generator" content="Bootply" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-        <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" type="text/css" href="static/css/style.css">
-    <link rel="shortcut icon" type="image/x-icon" href="static/images/main.ico">
 </head>
 <body>
-
-<script>
-    $(document).ready(function(){
-        $("#logout").hide();
-    });
-</script>
-
-<script>
-    $(document).ready(function(){
-      var date_input=$('input[name="date"]'); //our date input has the name "date"
-      var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-      var options={
-        format: 'mm/dd/yyyy',
-        container: container,
-        todayHighlight: true,
-        autoclose: true,
-      };
-      date_input.datepicker(options);
-    })
-</script>
-
-<div id="loginModal" class="modal show" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog">
-  <div id="login-container"  class="modal-content">
-      <div class="modal-header">
-          <h3 class="text-center">Find flights between two locations</h3>
-      </div>
-      <div class="modal-body">
-          <form class="form col-md-12 center-block" action="flight" method="POST" >
-            <div class="form-group">
-              <input id="longitude1" name="longitude1" type="text" class="form-control input-lg" placeholder="Longitude 1">
-            </div>
-            <div class="form-group">
-              <input id="latitude1" name="latitude1" type="text" class="form-control input-lg" placeholder="Latitude 1">
-            </div>
-            <div class="form-group">
-              <input id="longitude2" name="longitude2" type="text" class="form-control input-lg" placeholder="Longitude 2">
-            </div>
-            <div class="form-group">
-              <input id="latitude2" name="latitude2" type="text" class="form-control input-lg" placeholder="Latitude 2">
-            </div>
-            <div class="form-group">
-              <input id="date" name="date" type="text" class="form-control input-lg" placeholder="YYYY/MM/DD">
-            </div>
-            <div class="form-group">
-              <button id = "submit-btn" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </form>
-
-          <p><strong><center>{{ rsp }}</center></strong>
-      </div>
-
-      
-      <div class="modal-header">
-          <h3 class="text-center">Find nearby interesting cities</h3>
-      </div>
-      <div class="modal-body">
-          <form class="form col-md-12 center-block" action="interest" method="POST" >
-            <div class="form-group">
-              <input id="City Name" name="city" type="text" class="form-control input-lg" placeholder="Tel Aviv">
-            </div>
-            <div class="form-group">
-              <button id = "submit-btn" class="btn btn-primary btn-lg btn-block">Submit</button>
-            </div>
-          </form>
-
-          <p><strong><center>{{ rsp }}</center></strong>
-      </div>
-      
-      <div class="modal-footer">
-      </div>
-  </div>
-  </div>
-</div>
+</br></br></br></br></br></br></br>
+<b> <center> Welcome to travelytics demo using Amadeus APIs </b>
 </body>
 </html>
