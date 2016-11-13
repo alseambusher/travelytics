@@ -64,8 +64,26 @@ function put_url_data(){
 	});
 }
 
+function get_trip_plan(source,destination)
+{
+	show_progress_bar();
+	initMap(source, destination);
+	setTimeout(()=>{
+		document.getElementById("map").style.position = "static";
+		google.maps.event.trigger(document.getElementById("map"), 'resize');
+	}, 1000);
+	document.getElementById("places_in_location").style.display = "inline";
+	document.getElementById("places_in_itinenary").style.display = "inline";
+	document.getElementById("location").innerHTML = destination;
+	document.getElementById("place_list").innerHTML = "";
+	document.getElementById("place_itinenary").innerHTML = "";
+
+}
+
+
 function plan_trip_form(){
-	let body = `<form><input placeholder="From" type="text" required="" id="plan_trip_source"></form>`;
+	let body = `<form><input placeholder="From" type="text" required="" id="plan_trip_source"></form>
+				<form><input placeholder="Destination" type="text" required="" id="plan_trip_destination"></form>`;
 	messageBox(body, "Plan Trip", "Search", "Cancel", () => {
 		console.log("clicked")
 		FB.api('/me', 'get', (user) => {
@@ -73,31 +91,32 @@ function plan_trip_form(){
 			$.get(routes.recommend + "?uid="+ user.id, function(data) {
 					console.log(data.matches);
 					document.getElementById("trip_switcher").innerHTML = "";
-					if (data.matches.length > 0){
+					if(document.getElementById('plan_trip_destination').value != "")
+					{
+						get_trip_plan(document.getElementById('plan_trip_source').value,document.getElementById('plan_trip_destination').value)
+					}
+
+					if (data.matches.length > 0)
+					{
 						let a = document.createElement("a");
 						a.className = "mdl-navigation__link";
 						a.innerHTML = "<b>Suggestions</b>";
 						document.getElementById("trip_switcher").appendChild(a);
 					}
-					for (let i=0; i<data.matches.length; i++){
+					for (let i=0; i<data.matches.length; i++)
+					{
 						let a = document.createElement("a");
 						a.className = "mdl-navigation__link";
 						a.innerHTML = document.getElementById("plan_trip_source").value + ' <i class="material-icons">trending_flat</i> ' + data.matches[i];
 						document.getElementById("trip_switcher").appendChild(a);
-						a.onclick = function(){
-							show_progress_bar();
-							initMap(document.getElementById("plan_trip_source").value, data.matches[i]);
-							setTimeout(()=>{
-								document.getElementById("map").style.position = "static";
-								google.maps.event.trigger(document.getElementById("map"), 'resize');
-							}, 1000);
-							document.getElementById("places_in_location").style.display = "inline";
-							document.getElementById("places_in_itinenary").style.display = "inline";
-							document.getElementById("location").innerHTML = data.matches[i];
-							document.getElementById("place_list").innerHTML = "";
-							document.getElementById("place_itinenary").innerHTML = "";
+						a.onclick = function()
+						{
+							get_trip_plan(document.getElementById('plan_trip_source').value,data.matches[i])
 						};
 					}
+
+						
+
 				});
 				//
 			});
