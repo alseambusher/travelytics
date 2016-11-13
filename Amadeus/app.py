@@ -54,7 +54,7 @@ def flight():
 
 def findNearestAirport(city):
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
-    r = requests.get(baseurl+secret+'&latitude='+city[0]+'&longitude='+city[1])
+    r = requests.get(baseurl+secret+'&latitude='+str(city[0])+'&longitude='+str(city[1]))
 
     return r.json()[0]["airport"]
 
@@ -139,9 +139,10 @@ def nearestAirport():
         lng2 = r.json()['results'][0]['geometry']['bounds']['northeast']['lng']
         print "Got (lang, lat) from source, "+str(lat2), str(lng2)
         
-        data = findNearestAirport(lat1, lng1, lat2, lng2)
+        data = findNearestAirportAmongTwo(lat1, lng1, lat2, lng2)
+        
         result1 = {}
-        result1['name'] = data['origin']['city_name']
+        result1['name'] = data['origin']['airport_name']
         result1['categories'] = []
         result1['image'] = ""
         result1['longitude'] = data['origin']['location']['longitude']
@@ -149,14 +150,30 @@ def nearestAirport():
         result1['description'] = ""
         
         result2 = {}
-        result2['name'] = data['destination']['city_name']
+        result2['name'] = data['destination']['airport_name']
         result2['categories'] = []
         result2['image'] = ""
         result2['longitude'] = data['destination']['location']['longitude']
         result2['latitude'] = data['destination']['location']['latitude']
         result2['description'] = ""
-            
-        return jsonify({"origin":result1, "destination": result2})
+                
+        result3 = {}
+        result3['name'] = request.json['source']
+        result3['categories'] = []
+        result3['image'] = ""
+        result3['longitude'] = lng1
+        result3['latitude'] = lat1
+        result3['description'] = ""
+        
+        result4 = {}
+        result4['name'] = request.json['destination']
+        result4['categories'] = []
+        result4['image'] = ""
+        result4['longitude'] = lng2
+        result4['latitude'] = lat2
+        result4['description'] = ""
+        
+        return jsonify({"fromAirport":result1, "toAirport": result2,"home":result3, "destination": result4})
 
 def filteredInfoInterestingPlaces(data):
     #results = {'title':__, "categories": [], "image": url, "longitude": __, "latitude":__, "description":__}
@@ -179,7 +196,7 @@ def filteredInfoInterestingPlaces(data):
     else:
         return {"locations":results[:5]}
 
-def findNearestAirport(lat1, lng1, lat2, lng2):
+def findNearestAirportAmongTwo(lat1, lng1, lat2, lng2):
     
     baseurl = 'https://api.sandbox.amadeus.com/v1.2/airports/nearest-relevant?apikey='
     r = requests.get(baseurl+secret+'&latitude='+str(lat1)+'&longitude='+str(lng1))
