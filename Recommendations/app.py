@@ -106,7 +106,7 @@ def prep_input(user_dict, place_info, friend=True, friend_dict={}):
 		elif user['city'] not in required_frmt[user]:
 			required_frmt[user].append(user['city'])
 	return required_frmt, place_info
-		
+
 """
 # Takes 3 arguments:
 # 1) visted_places: a list containing the places our user has visited
@@ -122,17 +122,17 @@ def main():
 	k = 3
 	visited_places = []
 	strangers = {}
-	visited_places_dict = request.json('visited_places')
+	visited_places_dict = request.json['visited_places']
 	place_info = {}
 	for location in visited_places_dict:
 		if location['city'] not in visited_places:
 			visited_places.append(location['city'])
-		place_info[location] = location
-	friends = request.args.json('friends')
-	people = request.args.json('people')
+		place_info[location["city"]] = location
+	friends = request.json['friends']
+	people = request.json['people']
 	friends, place_info = prep_input(friends, place_info)
 	strangers, place_info = prep_input(people, place_info, friend=False, friend_dict=friends)
-	unfrmtd_sentiments = request.args.json('sentiments')
+	unfrmtd_sentiments = request.json['sentiments']
 	sentiments = {}
 	for loc in unfrmtd_sentiments:
 		if 'city' in loc:
@@ -145,7 +145,6 @@ def main():
 @app.route('/', methods=['GET'])
 @cross_origin()
 def test():
-	return flask.jsonify({"status": "working"})
+	return "test"
 
-
-app.run(host='localhost')
+app.run(host='0.0.0.0', debug=True)
