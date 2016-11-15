@@ -9,7 +9,6 @@ from flask_cors import CORS, cross_origin
 # Flask configuration
 app = Flask(__name__)
 CORS(app)
-secret = 'SPYPBzEK27i6j0YYeFY6y0ZRAM3gGAbP'
 
 @app.route('/')
 def index():
@@ -35,8 +34,9 @@ def interest():
             
             return jsonify(filteredInfoInterestingPlaces(r.json()))
         else:
-            rsp = "City not in the database. Please try again."
-            return render_template('index.html',rsp=rsp)
+            #rsp = "City not in the database. Please try again."
+            return {"locations":[]}
+            #return render_template('index.html',rsp=rsp)
 
 @app.route('/nearestAirport', methods=['POST'])
 def nearestAirport():
@@ -69,9 +69,6 @@ def nearestAirport():
         
         data = findNearestAirportAmongTwo(lat1, lng1, lat2, lng2)
         
-        if len(data) < 1:
-            return {"Coudn't retrieve anything"}
-        
         home = {}
         home['name'] = request.json['source']
         home['categories'] = []
@@ -88,7 +85,10 @@ def nearestAirport():
         destination['latitude'] = lat2
         destination['description'] = ""
         
-        return jsonify({'fromAirport':data['stops'][0],'toAirport':data['stops'][-1],'stops':data['stops'][1:-1],'price':data['price'],"home":home, "destination": destination})
+        if len(data) < 1:
+            return jsonify({'fromAirport':[],'toAirport':[],'stops':[],'price':0,"home":home, "destination": destination})
+        else:
+            return jsonify({'fromAirport':data['stops'][0],'toAirport':data['stops'][-1],'stops':data['stops'][1:-1],'price':data['price'],"home":home, "destination": destination})
 
 def filteredInfoInterestingPlaces(data):
     #results = {'title':__, "categories": [], "image": url, "longitude": __, "latitude":__, "description":__}
@@ -259,4 +259,8 @@ def findNearestAirportAmongTwo(lat1, lng1, lat2, lng2):
     return {"stops": [], "price" : 0}
     
 # Run
+f = open("config",'r')
+secret = f.read()
+#print secret
+f.close()
 app.run(host='0.0.0.0',threaded=True,debug=True)
